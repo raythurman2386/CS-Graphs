@@ -38,7 +38,25 @@ class Graph:
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
+        visited = set()
 
+        # Create a queue for BFS
+        queue = Queue()
+        queue.enqueue(starting_vertex)
+        visited.add(starting_vertex)
+
+        while queue.size() > 0:
+            # Dequeue a vertex
+            # from the queue and print
+            s = queue.dequeue()
+            print(s, end=" ")
+
+            # Get all adjacent vertices of the dequeued vertex
+            # If it hasnt been visited mark visited and enqueue it
+            for i in self.vertices[s]:
+                if i not in visited:
+                    queue.enqueue(i)
+                    visited.add(i)
 
 
     def dft(self, starting_vertex):
