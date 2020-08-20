@@ -104,17 +104,27 @@ class Graph:
         # Create an empty set to track visited verticies
         visited = list()
         q = Queue()
-        q.enqueue(starting_vertex)
+        q.enqueue([starting_vertex])
 
         while q.size() > 0:
             cur_vertice = q.dequeue()
-            visited.append(cur_vertice)
-            for i in self.get_neighbors(cur_vertice):
-                if i not in visited:
-                    q.enqueue(i)
-                if i is destination_vertex:
-                    visited.append(i)
-                    return visited
+            prev_vert = cur_vertice[-1]
+
+            if prev_vert == destination_vertex:
+                return cur_vertice
+
+            if prev_vert not in visited:
+                neighbors = self.get_neighbors(prev_vert)
+
+                for neighbor in neighbors:
+                    new_vert = list(cur_vertice)
+                    new_vert.append(neighbor)
+                    q.enqueue(new_vert)
+
+                    if neighbor == destination_vertex:
+                        return new_vert
+
+                visited.append(prev_vert)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
