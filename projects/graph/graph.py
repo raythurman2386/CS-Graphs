@@ -151,18 +151,32 @@ class Graph:
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
-
+​
         This should be done using recursion.
         """
-        visited = v
-        visited.append(starting_vertex)
 
-        for i in self.get_neighbors(starting_vertex):
-            if i not in visited:
-                self.dfs_recursive(i, destination_vertex, visited)
-            if i is destination_vertex:
-                visited.append(i)
-                return visited
+        if visited is None:
+            visited = set()
+        if path is None:
+            path = []  # because needs to be ordered
+        visited.add(starting_vertex)
+        path = path + [starting_vertex]
+
+        # check if it's our target node, if so return
+        if starting_vertex == destination_vertex:
+            return path
+        # iterate over neighbors
+        # check if visited
+        for neighbor in self.get_neighbors(starting_vertex):
+            if neighbor not in visited:
+                # if not, recurse with a path
+                result = self.dfs_recursive(
+                    neighbor, destination_vertex, path, visited)
+        # if this recursion returns a path,
+                if result is not None:
+                    # return from here
+                    return result
+        return None
 
 
 if __name__ == '__main__':
