@@ -35,4 +35,36 @@ class Stack():
 
 
 def earliest_ancestor(ancestors, starting_node):
-    pass
+    graph = Graph()
+    for pair in ancestors:
+        graph.add_vertex(pair[0])
+        graph.add_vertex(pair[1])
+        graph.add_edge(pair[1], pair[0])
+    visited = set()
+    stack = Stack()
+    stack.push([starting_node])
+    longest_path = [[starting_node]]
+    earliest_one = -1
+    while stack.size() > 0:
+        path = stack.pop()
+        current = path[-1]
+        # If there is more than one ancestor tied for "earliest", return the one with the lowest numeric ID
+        if (len(path) > len(longest_path)) or (len(path) == len(longest_path)) and current < earliest_one:
+            longest_path = path
+            earliest_one = longest_path[-1]
+        if current not in visited:
+            visited.add(current)
+            parents = graph.get_neighbors(current)
+            for parent in parents:
+                new_path = path.copy()
+                new_path.append(parent)
+                stack.push(new_path)
+    return earliest_one
+
+
+test_ancestors = [(1, 3), (2, 3), (3, 6), (4, 5), (4, 8),
+                  (5, 6), (5, 7), (8, 9), (11, 8), (10, 1)]
+
+print(earliest_ancestor(test_ancestors, 1))
+print(earliest_ancestor(test_ancestors, 2))
+print(earliest_ancestor(test_ancestors, 5))

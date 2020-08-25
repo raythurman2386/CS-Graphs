@@ -146,7 +146,7 @@ class Graph:
                     visited.append(i)
                     return visited
 
-    def dfs_recursive(self, starting_vertex, destination_vertex, v=list()):
+    def dfs_recursive(self, starting_vertex, destination_vertex, visited=None, path=None):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
