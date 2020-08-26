@@ -6,6 +6,23 @@ class User:
         self.name = name
 
 
+class Queue():
+    def __init__(self):
+        self.queue = []
+
+    def enqueue(self, value):
+        self.queue.append(value)
+
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+
+    def size(self):
+        return len(self.queue)
+
+
 class SocialGraph:
     def __init__(self):
         self.last_id = 0
@@ -84,6 +101,17 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        queue = Queue()
+        queue.enqueue([user_id])
+        while queue.size() > 0:
+            path = queue.dequeue()
+            current = path[-1]
+            if current not in visited:
+                visited[current] = path
+                for item in self.friendships[current]:
+                    new_path = path.copy()
+                    new_path.append(item)
+                    queue.enqueue(new_path)
         return visited
 
 
